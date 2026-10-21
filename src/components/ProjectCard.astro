@@ -1,0 +1,9 @@
+---
+import Picture from './Picture.astro';
+import {base} from '../data/projects';
+const {project:p}=Astro.props;
+---
+<article class="project" data-category={p.category} data-slug={p.slug}>
+ <a class="project-image" href={`${base}projetos/${p.slug}/`}><Picture name={p.image} alt={p.alt}/><span class="image-arrow" aria-hidden="true">↗</span></a>
+ <div class="project-caption"><div><span class="eyebrow">{p.category} · {p.year}</span><h3><a href={`${base}projetos/${p.slug}/`}>{p.name}</a></h3><p>{p.place}</p></div><button class="save" data-save={p.slug} aria-label={`Salvar ${p.name}`} aria-pressed="false">＋</button></div>
+</article>

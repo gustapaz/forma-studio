@@ -1,0 +1,3 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {estimate} from '../src/data/brief.ts';
+test('estimativas diferenciam o escopo e mantêm intervalo ordenado',()=>{assert.deepEqual(estimate(100,'Residencial'),{min:20000,max:30000});assert.deepEqual(estimate(100,'Interiores'),{min:14400,max:21600});assert.ok(estimate(100,'Comercial').min>estimate(100,'Interiores').min)});
+test('áreas inválidas não geram estimativas enganosas',()=>{for(const area of [0,19,2001,NaN,Infinity])assert.throws(()=>estimate(area,'Residencial'),RangeError);assert.doesNotThrow(()=>estimate(20,'Residencial'));assert.doesNotThrow(()=>estimate(2000,'Comercial'))});

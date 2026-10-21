@@ -1,0 +1,22 @@
+---
+import '../styles/global.css';
+import {base} from '../data/projects';
+const {title='Forma — arquitetura para viver',description='Um estúdio fictício de arquitetura que explora espaços, luz e novas formas de viver. Conheça projetos e monte seu briefing demonstrativo.'}=Astro.props;
+const current=Astro.url.pathname;
+const nav=[['Projetos','projetos/'],['Estúdio','estudio/'],['Vamos conversar','contato/']];
+---
+<!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="description" content={description}/><meta name="theme-color" content="#eeeae2"/><title>{title}</title><link rel="canonical" href={new URL(current,Astro.site)}/><link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`}/><meta property="og:title" content={title}/><meta property="og:description" content={description}/><meta property="og:type" content="website"/><meta property="og:url" content={new URL(current,Astro.site)}/><meta property="og:image" content={new URL(`${base}images/casa-1600.webp`,Astro.site)}/><meta name="twitter:card" content="summary_large_image"/></head><body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+<header class="header"><a class="logo" href={base} aria-label="Forma, início">forma<span>®</span></a><span class="header-note">Arquitetura & interiores<br/>São Paulo · Brasil</span><button class="menu-toggle" aria-expanded="false" aria-controls="navigation">Menu <span>＋</span></button><nav id="navigation" aria-label="Principal">{nav.map(([label,path])=><a href={base+path} aria-current={current.startsWith(base+path)?'page':undefined}>{label}{path==='contato/'&&<span aria-hidden="true"> ↗</span>}</a>)}</nav></header>
+<main id="conteudo"><slot/></main>
+<footer><div class="footer-top"><p>Todo grande espaço<br/>começa com uma conversa.</p><a class="round-link" href={`${base}contato/`} aria-label="Começar um briefing">↗</a></div><div class="footer-bottom"><a class="logo" href={base}>forma<span>®</span></a><p>Estúdio fictício · projeto demonstrativo<br/>Nenhum orçamento ou mensagem é enviado.</p><a href={`${base}privacidade/`}>Privacidade & créditos</a><a href="https://github.com/gustapaz/forma-studio" target="_blank" rel="noreferrer">Código no GitHub ↗</a><span>© {new Date().getFullYear()} Forma</span></div></footer><div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script>
+ const toggle=document.querySelector<HTMLButtonElement>('.menu-toggle')!;const nav=document.querySelector<HTMLElement>('#navigation')!;
+ const close=()=>{toggle.setAttribute('aria-expanded','false');nav.classList.remove('open')};
+ toggle.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')!=='true';toggle.setAttribute('aria-expanded',String(open));nav.classList.toggle('open',open)});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape' && toggle.getAttribute('aria-expanded')==='true'){close();toggle.focus()}});
+ const toast=document.querySelector<HTMLElement>('#toast')!;let timer:ReturnType<typeof setTimeout>;
+ let saved:string[]=[];try{saved=JSON.parse(localStorage.getItem('forma-saved')||'[]');if(!Array.isArray(saved))saved=[]}catch{}
+ const sync=()=>document.querySelectorAll<HTMLButtonElement>('[data-save]').forEach(btn=>{const active=saved.includes(btn.dataset.save!);btn.setAttribute('aria-pressed',String(active));btn.textContent=active?'✓':'＋';const name=btn.closest('article')?.querySelector('h3')?.textContent||'projeto';btn.setAttribute('aria-label',`${active?'Remover':'Salvar'} ${name}`)});
+ document.querySelectorAll<HTMLButtonElement>('[data-save]').forEach(btn=>btn.addEventListener('click',()=>{const id=btn.dataset.save!;saved=saved.includes(id)?saved.filter(x=>x!==id):[...saved,id];try{localStorage.setItem('forma-saved',JSON.stringify(saved));toast.textContent=saved.includes(id)?'Referência salva neste dispositivo.':'Referência removida.'}catch{toast.textContent='Armazenamento indisponível. Referência salva apenas nesta página.'}sync();toast.classList.add('visible');clearTimeout(timer);timer=setTimeout(()=>toast.classList.remove('visible'),3000);document.dispatchEvent(new Event('savedchange'))}));sync();
+</script></body></html>

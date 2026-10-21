@@ -1,0 +1,29 @@
+{
+  "name": "forma-studio",
+  "version": "1.0.0",
+  "description": "Estúdio fictício de arquitetura — portfólio front-end em Astro",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.ts",
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview"
+  },
+  "keywords": [],
+  "author": "Gustavo Paz",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.4.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@types/node": "^26.6.5",
+    "sharp": "^0.35.5",
+    "typescript": "6.0.3"
+  }
+}

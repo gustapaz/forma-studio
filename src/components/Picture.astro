@@ -1,0 +1,6 @@
+---
+import {base} from '../data/projects';
+interface Props {name:string;alt:string;hero?:boolean;class?:string}
+const {name,alt,hero=false,class:className=''}=Astro.props;
+---
+<img class={className} src={`${base}images/${name}-960.webp`} srcset={`${base}images/${name}-480.webp 480w, ${base}images/${name}-960.webp 960w, ${base}images/${name}-1600.webp 1600w`} sizes={hero?'100vw':'(max-width: 700px) 100vw, 50vw'} width="1600" height="1100" alt={alt} loading={hero?'eager':'lazy'} fetchpriority={hero?'high':'auto'} decoding="async" />

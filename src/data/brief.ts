@@ -1,0 +1,1 @@
+export function estimate(area:number,service:string){if(!Number.isFinite(area)||area<20||area>2000)throw new RangeError('Informe uma área entre 20 e 2.000 m².');const rate=service==='Interiores'?180:service==='Comercial'?220:250;return {min:Math.round(area*rate*.8),max:Math.round(area*rate*1.2)}}
